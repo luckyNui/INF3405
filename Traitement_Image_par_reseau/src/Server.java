@@ -133,13 +133,12 @@ public class Server {
 	        	String passeword;
 	            try
 	            {
-	            	///
-	                // Crï¿½ation d'un canal pour envoyer des messages au client
+	   
+	                // Création d'un canal pour envoyer des messages au client
 	                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 	        
 	                // Envoie d'un message      
 	                DataInputStream in = new DataInputStream(socket.getInputStream());
-	                String helloMessageFromServer = in.readUTF();
 	        		user = in.readUTF();
 	        		passeword = in.readUTF();
 	        		
@@ -149,26 +148,13 @@ public class Server {
 	        			out.writeUTF("Erreur dans la saisie du mot de passe");
 	        			socket.close();
 	        			return;
-	        		} else out.writeUTF("Welcome " + user);
+	        		} else {
+	        			out.writeUTF("Welcome " + user);}
 	            }
 	            catch (IOException e)
 	            {
 	            System.out.println( "Error handling client#" + clientNumber + " . " + e);
 	            }
-	            finally
-	            {
-	            try
-	            {
-	            // Fermeture de la connexion avec le client
-	            socket.close();
-	            }
-	            catch (IOException e)
-	            {
-	            System.out.println( "Could not close a socket");
-	            }
-	            System.out.println( "Connection with client#" + clientNumber + " closed") ;
-	            }
-	            
 	            
 	            try {
 	            	DataOutputStream out = new DataOutputStream(socket.getOutputStream());

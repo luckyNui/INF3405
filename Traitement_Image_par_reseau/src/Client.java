@@ -67,8 +67,6 @@ public class Client {
      	/** Get image path*/
      	Path ImgPath = null;
  		System.out.println("Enter the path of the image you want to process: ");
- 		System.out.println("Enter the name of the image : ");
- 		String imageName = reader.nextLine();
  		try {
  			ImgPath = Paths.get(reader.nextLine());
  		} catch (Exception e) {
@@ -76,7 +74,9 @@ public class Client {
  			socket.close();
  			return;
  		}
- 		 loginInfo.writeUTF(imageName); // send image name to server
+ 		System.out.println("Enter the name of the image : ");
+ 		String imageName = reader.nextLine();
+ 		loginInfo.writeUTF(imageName); // send image name to server
  		 
  		/**Open the image */
  		File img = null;
@@ -117,6 +117,7 @@ public class Client {
 		}
         // ajout de -sobel au nom du fichier
  		String[] fileName = imageName.split(".jpg");
+ 		System.out.println(fileName);
  		StringBuilder newName = new StringBuilder();
  		newName.append(fileName[0]);
  		newName.append("-sobel");
