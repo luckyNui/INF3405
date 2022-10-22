@@ -13,44 +13,33 @@ public class Server {
 	 
 	    // Application Serveur
 	 private static String validateIP(Scanner reader) {
-		 System.out.println("Bonjour mon cher ami, Veuillez entrer votre adresse ip.");
+		 System.out.println("Welcome dear friend user, Please enter your Ip adress .");
 		 String ipAdress ="";
 		 boolean ipValid = true;
 			while (ipValid) {
 					ipAdress =  reader.nextLine();
 					boolean ipV = Ipvalidation(ipAdress);
-			     	
 			     	if (ipV == true) {
-			     		System.out.println("IP valide");
 			     		ipValid = false;
 			     	}
 			     	else {
-			     		System.out.println("L'adresse IP entrer est invalide. Veuillez entre une adresse du format XXX.XXX.XXX.XXX : ");
+			     		System.out.println("The Ip adress is invalid. Please enter an adress of the format XXX.XXX.XXX.XXX : ");
 			     	}
 			}	
 		return ipAdress;
 		}
 	
-	 private static boolean Ipvalidation(String ip)
+	 private static boolean Ipvalidation( String ip )
      {
-     	// validation pour les 4 octets
-     	int count = 0;
+     	// number of comma for 4 octets 
      	int defaultComma = 3;
-
-     	for (int i = 0; i< ip.length(); i++) {
-     		if(ip.charAt(i) == '.') {
-     			count++;
-     		}
-     	}
-     	
-     	if (count > defaultComma) {
-     		
-     		return false;
-     	}
-     	
-     	/// validation de l'IP
-     	return isValidIpAdress(ip);	
+     	//count occurence of "." in string
+     	int count = ip.split("\\.",-1).length-1; 
+     	boolean isValid = (count > defaultComma)? false:isValidIpAdress(ip);	  
+		
+     	return isValid;     	
      }
+     
      
      private static boolean isValidIpAdress(String ip)
      {
@@ -64,35 +53,28 @@ public class Server {
      
      private static int validatePort(Scanner reader) {
     	 
-    	int portMin = 5000;
- 		int portMax = 5050;
- 		boolean portValid = true;
- 		int portEntered = 0;
- 		
-    	 while (portValid) {
- 	     	System.out.println("Veuillez entrer un port valide.");
- 	     	
- 	     	if(reader.hasNextInt()) {
- 	     		portEntered = reader.nextInt();
- 	     	}
- 	     	else 
- 	     	{
- 	     		System.out.println("Veuiller entrer un nombre entier comme port.");
- 	     	}
- 	     	
- 	    	boolean isPortValid  = (portMin <= Math.floor(portEntered) && portMax >= Math.floor(portEntered)) ? true: false;
- 	     	if (isPortValid == true) {
- 	     		portValid = false;
- 	     		System.out.println("Port valide");
- 	     	}
- 	     	else {
- 	     		System.out.println ("Veuiller entrer un port inclu entre 5000 et 5050 !");
- 	     	}
- 	     	///
- 	     	}
-    	 
-    	 return portEntered;
-     }
+     	int portMin = 5000;
+  		int portMax = 5050;
+  		boolean portValid = true;
+  		int port = 0;
+  		
+     	 while (portValid) {
+     		 
+  	     	System.out.println("Please enter a valid port. (should be between 5000 and 5050 ): ");
+  	     	String portEntered = reader.nextLine();
+  	     	port = Integer.parseInt(portEntered);
+  	     	
+  	    	boolean isPortValid  = (portMin <= port && portMax >= port) ? true: false;
+  	     	if (isPortValid == true) {
+  	     		portValid = false;
+  	     	}
+  	     	else {
+  	     		System.out.println ("Please enter a port between 5000 and 5050 !");
+  	     	}
+  	     }
+     	 
+     	 return port;
+      }
      
 	    public static void main(String[] args) throws Exception
 	    {
