@@ -66,7 +66,7 @@ public class Client {
      	
      	/** Get image path*/
      	Path ImgPath = null;
- 		System.out.println("Enter the path of the image you want to process: ");
+ 		System.out.println("Enter the absolute path of the image you want to process: ");
  		try {
  			ImgPath = Paths.get(reader.nextLine());
  		} catch (Exception e) {
@@ -117,7 +117,6 @@ public class Client {
 		}
         // ajout de -sobel au nom du fichier
  		String[] fileName = imageName.split(".jpg");
- 		System.out.println(fileName);
  		StringBuilder newName = new StringBuilder();
  		newName.append(fileName[0]);
  		newName.append("-sobel");
