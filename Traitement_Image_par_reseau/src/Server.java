@@ -1,6 +1,11 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.sql.Timestamp;
+import java.nio.ByteBuffer;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 
 public class Server {
 	
@@ -102,7 +107,7 @@ public class Server {
 	        int serverPort = validatePort(reader);
 	        
 	        
-	        // Création d'une connexion avec les clients
+	        // Crï¿½ation d'une connexion avec les clients
 	        
 	        listener = new ServerSocket();
 	        listener.setReuseAddress(true);
@@ -142,22 +147,82 @@ public class Server {
 	        }
 	        public void run()
 	        {
+	        	String user = "";
+	        	String passeword;
 	            try
 	            {
 	            	///
-	                // Création d'un canal pour envoyer des messages au client
+	                // Crï¿½ation d'un canal pour envoyer des messages au client
 	                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 	        
 	                // Envoie d'un message      
 	                DataInputStream in = new DataInputStream(socket.getInputStream());
 	                String helloMessageFromServer = in.readUTF();
+	        		user = in.readUTF();
+	        		passeword = in.readUTF();
 	        		
-	        		System.out.println(helloMessageFromServer);
+	        		CVSHandler csv = new CVSHandler();
+	        		boolean succes = csv.login(user, passeword);
+	        		if (!succes) { 
+	        			out.writeUTF("Erreur dans la saisie du mot de passe");
+	        			socket.close();
+	        			return;
+	        		} else out.writeUTF("Welcome " + user);
 	            }
 	            catch (IOException e)
 	            {
 	            System.out.println( "Error handling client#" + clientNumber + " . " + e);
 	            }
+	            finally
+	            {
+	            try
+	            {
+	            // Fermeture de la connexion avec le client
+	            socket.close();
+	            }
+	            catch (IOException e)
+	            {
+	            System.out.println( "Could not close a socket");
+	            }
+	            System.out.println( "Connection with client#" + clientNumber + " closed") ;
+	            }
+	            
+	            
+	            try {
+	            	DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+	    	        
+	                // Envoie d'un message      
+	                DataInputStream in = new DataInputStream(socket.getInputStream());
+	                String ImageName = in.readUTF();
+	                System.out.format( "[%s - %s:%d - %s] : Image %s recue pour taitement%n", user,
+	                        socket.getInetAddress().toString(), socket.getPort(),
+	                        new Timestamp(System.currentTimeMillis()).toString(), ImageName);
+	                
+	                byte[] sizeArr = new byte[4];
+	            	in.read(sizeArr);
+	            	int size = ByteBuffer.wrap(sizeArr).asIntBuffer().get();
+	            	
+	            	byte[] imageArr = new byte[size];
+	            	in.read(imageArr);
+	            	
+	            	BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageArr));
+	                BufferedImage sobel = Sobel.process(image);
+	                
+	                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+					ImageIO.write(sobel, "JPEG", byteArrayOutputStream);
+					
+					byte[] outSize = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+					out.write(outSize);
+					out.write(byteArrayOutputStream.toByteArray());
+					out.flush();
+
+					out.close();
+					in.close();
+	            	
+	            }catch (IOException e) {
+	            	System.out.println( "Error handling client#" + clientNumber + " . " + e);}
+	        
+	            
 	            finally
 	            {
 	            try
