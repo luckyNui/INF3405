@@ -7,12 +7,12 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 
 
-public class Server {
-	
+public class Server 
+{
 	 private static ServerSocket listener;
 	 
-	    // Application Serveur
-	 private static String validateIP(Scanner reader) {
+	 private static String validateIP(Scanner reader) 
+	 {
 		 System.out.println("Welcome dear friend user, Please enter your Ip adress .");
 		 String ipAdress ="";
 		 boolean ipValid = true;
@@ -27,13 +27,13 @@ public class Server {
 			     	}
 			}	
 		return ipAdress;
-		}
+	 }
 	
 	 private static boolean Ipvalidation( String ip )
      {
      	// number of comma for 4 octets 
      	int defaultComma = 3;
-     	//count occurence of "." in string
+     	//count occurrence of "." in string
      	int count = ip.split("\\.",-1).length-1; 
      	boolean isValid = (count > defaultComma)? false:isValidIpAdress(ip);	  
 		
@@ -51,20 +51,19 @@ public class Server {
      	}
      }
      
-     private static int validatePort(Scanner reader) {
-    	 
+     private static int validatePort(Scanner reader) 
+     {
      	int portMin = 5000;
   		int portMax = 5050;
   		boolean portValid = true;
   		int port = 0;
   		
      	 while (portValid) {
-     		 
   	     	System.out.println("Please enter a valid port. (should be between 5000 and 5050 ): ");
   	     	String portEntered = reader.nextLine();
   	     	port = Integer.parseInt(portEntered);
-  	     	
   	    	boolean isPortValid  = (portMin <= port && portMax >= port) ? true: false;
+  	    	
   	     	if (isPortValid == true) {
   	     		portValid = false;
   	     	}
@@ -74,45 +73,40 @@ public class Server {
   	     }
      	 
      	 return port;
-      }
+     }
      
-	    public static void main(String[] args) throws Exception
-	    {
-	        // Compteur de connexion
-	    	
+	  public static void main(String[] args) throws Exception
+	  {
+	        // Connexion counter
 	        int clientNumber = 0;
 	        
-	        // Adresse et port du serveur
-	        
+	        // Server address and server port
 	        Scanner reader = new Scanner (System.in);
 	        String serverAddress = validateIP(reader);
 	        int serverPort = validatePort(reader);
 	        
-	        
-	        // Crï¿½ation d'une connexion avec les clients
-	        
+	        // Establishing  a connexion with the client
 	        listener = new ServerSocket();
 	        listener.setReuseAddress(true);
 	        InetAddress serverIP = InetAddress.getByName (serverAddress);
 	        
-	        // Association de l'adresse et du port
+	        // Association of the port and the address
 	        listener.bind(new InetSocketAddress(serverIP, serverPort));
 	        System.out. format ("The server is running %s:%d%n", serverAddress, serverPort);
 	        
-	        
 	        try
 	        {
-	            // Pour chaque connexion d'un client
+	            // for each connexion of the client
 	            while(true)
 	            {
-	            // On attend le prochain client
-	            // Note : la fonction accept est bloquante
+	            // we're waiting for the next client
+	            // Note : accept() is a blocking method 
 	            new ClientHandler(listener.accept(), clientNumber++).start();
 	            }
 	        }
 	        finally
 	        {
-	            // Fermeture de la connexion avec le client
+	            // Closing the connection with the client
 	            listener.close();
 	        }
 	    }
@@ -133,16 +127,15 @@ public class Server {
 	        	String passeword;
 	            try
 	            {
-	   
-	                // Création d'un canal pour envoyer des messages au client
+	                // creation of a channel to send messages to the client
 	                DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 	        
-	                // Envoie d'un message      
+	                //creation of a channel to receive message from the client   
 	                DataInputStream in = new DataInputStream(socket.getInputStream());
 	        		user = in.readUTF();
 	        		passeword = in.readUTF();
 	        		
-	        		CVSHandler csv = new CVSHandler();
+	        		CSVHandler csv = new CSVHandler();
 	        		boolean succes = csv.login(user, passeword);
 	        		if (!succes) { 
 	        			out.writeUTF("Erreur dans la saisie du mot de passe");
@@ -159,7 +152,7 @@ public class Server {
 	            try {
 	            	DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 	    	        
-	                // Envoie d'un message      
+	            	//creation of a channel to receive message from the client       
 	                DataInputStream in = new DataInputStream(socket.getInputStream());
 	                String ImageName = in.readUTF();
 	                System.out.format( "[%s - %s:%d - %s] : Image %s recue pour taitement%n", user,
@@ -195,7 +188,7 @@ public class Server {
 	            {
 	            try
 	            {
-	            // Fermeture de la connexion avec le client
+	            // Close connexion with client (socket)
 	            socket.close();
 	            }
 	            catch (IOException e)

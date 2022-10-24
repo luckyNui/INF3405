@@ -1,12 +1,14 @@
 import java.io. * ;
 import java.util.Scanner;
 
-public class CVSHandler {
+public class CSVHandler 
+{
 	public String file = "utilisateur.csv";
 	public String delimiter = ",";
 	private File csv ;
 	
-	public boolean login(String user, String password) {
+	public boolean login(String user, String password) 
+	{
 		String line;
 		String[] range = null;
 		int position = 0;
@@ -50,11 +52,12 @@ public class CVSHandler {
 		}
 		
 		return status;
-		}
+	}
 		
 	
 	
-	private boolean csvIsReal() {
+	private boolean csvIsReal() 
+	{
 		csv = new File(file);
 		if(csv.exists()) {
 			return true;
@@ -69,7 +72,8 @@ public class CVSHandler {
 		}
 	}
 	
-	private int PositionOfUser(String[] data, String user) {
+	private int PositionOfUser(String[] data, String user) 
+	{
 		for (int i = 0; i<data.length; i = i+2){
 			if (data[i].equals(user)) {
 				return i;
@@ -79,7 +83,8 @@ public class CVSHandler {
 		return -1;
 	}
 	
-	private void addNewUser(String user, String pass) {
+	private void addNewUser(String user, String pass) 
+	{
 		try {
 			FileWriter writer = new FileWriter(file,true);
 			StringBuilder sb = new StringBuilder();

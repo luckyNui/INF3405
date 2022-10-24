@@ -9,18 +9,20 @@ import javax.imageio.ImageIO;// to read the image send to the server
 import java.io.*;
 import java.awt.image.BufferedImage; /// to use for the images 
 
-public class Client {
+public class Client 
+{
 	private static Socket socket;
 	private BufferedImage in;
     private BufferedImage out;
-	//Application client
 	
 	// Welcome message on the creation of client
-	public Client() {
+	public Client() 
+	{
         System.out.println("Welcome dear friend !");
     }
 	
-	public void ConnexionToServer() throws IOException{
+	public void ConnexionToServer() throws IOException
+	{
 		Scanner reader = new Scanner (System.in);
         String serverAddress = validateIP(reader);
         int serverPort = validatePort(reader);
@@ -36,7 +38,7 @@ public class Client {
         socket = new Socket(serverAddress, serverPort);
         System.out.format("The client is running on %s:%d%n", serverAddress, serverPort);
         
-        // creation of a channel to  send user info to server 
+        // creation of a channel to  send user informations to server 
         DataOutputStream loginInfo = new DataOutputStream(socket.getOutputStream());
         loginInfo.writeUTF(username);  
         loginInfo.writeUTF(password); 
@@ -115,7 +117,7 @@ public class Client {
 		catch (IOException e) {
         	e.printStackTrace();
 		}
-        // ajout de -sobel au nom du fichier
+        // add -sobel and .jpg to file name
  		String[] fileName = imageName.split(".jpg");
  		StringBuilder newName = new StringBuilder();
  		newName.append(fileName[0]);
@@ -135,7 +137,8 @@ public class Client {
 	
 	
 	
-	private static String validateIP(Scanner reader) {
+	private static String validateIP(Scanner reader) 
+	{
 		 System.out.println("Please enter an Ip adress to connect to the server.");
 		 String ipAdress ="";
 		 boolean ipValid = true;
@@ -151,7 +154,7 @@ public class Client {
 			     	}
 			}
 		return ipAdress;
-		}
+	}
 	
 	 private static boolean Ipvalidation( String ip )
      {
@@ -174,14 +177,14 @@ public class Client {
      	}
      }
      
-     private static int validatePort(Scanner reader) {
-    	 
+     private static int validatePort(Scanner reader) 
+     {
     	int portMin = 5000;
  		int portMax = 5050;
  		boolean portValid = true;
  		int port = 0;
  		
-    	 while (portValid) {
+    	while (portValid) {
     		 
  	     	System.out.println("Please enter a valid port. (should be between 5000 and 5050 ): ");
  	     	String portEntered = reader.nextLine();
@@ -200,7 +203,8 @@ public class Client {
      }
      
      //Runs the client application.
-     public static void main(String[] args) throws Exception {
+     public static void main(String[] args) throws Exception 
+     {
          Client client = new Client();
          client.ConnexionToServer();
      }
