@@ -155,9 +155,9 @@ public class Server
 	            	//creation of a channel to receive message from the client       
 	                DataInputStream in = new DataInputStream(socket.getInputStream());
 	                String ImageName = in.readUTF();
-	                System.out.format( "[%s - %s:%d - %s] : Image %s recue pour taitement%n", user,
+	                System.out.format( "[%s - %s:%d - %s] : Image %s reçue pour traitement%n", user,
 	                        socket.getInetAddress().toString(), socket.getPort(),
-	                        new Timestamp(System.currentTimeMillis()).toString(), ImageName);
+	                        new Timestamp(System.currentTimeMillis()).toString(), ImageName );
 	                
 	                byte[] sizeArr = new byte[4];
 	            	in.read(sizeArr);

@@ -78,7 +78,7 @@ public class Client
  		}
  		System.out.println("Enter the name of the image : ");
  		String imageName = reader.nextLine();
- 		loginInfo.writeUTF(imageName); // send image name to server
+ 		loginInfo.writeUTF(imageName+".jpg"); // send image name to server
  		 
  		/**Open the image */
  		File img = null;
